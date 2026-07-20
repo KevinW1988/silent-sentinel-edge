@@ -1,0 +1,46 @@
+# Silent Sentinel Edge – Configuration
+# Tuned for Jetson Orin Nano 8GB
+
+system:
+  name: "Silent Sentinel Strategic Edge"
+  version: "0.1.0"
+  human_in_loop: true
+  max_escalation_level: "operational"   # never auto-escalate to strategic without human
+
+llm:
+  backend: "ollama"          # options: ollama | llamacpp | mock
+  model: "qwen2.5:3b"        # change to any model that fits in 8GB
+  base_url: "http://localhost:11434"
+  temperature: 0.3
+  max_tokens: 512
+  timeout_seconds: 60
+
+pipeline:
+  enable_four_questions: true
+  enable_levels: true
+  enable_convergence: true
+  enable_framework_diagnostic: false   # heavier, off by default on edge
+
+sensing:
+  # Placeholder for real passive RF / CAM-Pulse style inputs
+  input_mode: "demo"         # demo | file | socket | ros2
+  demo_events:
+    - type: "passive_rf"
+      description: "Anomalous low-power L-band emission, intermittent, moving slowly"
+      features:
+        frequency_mhz: 1250
+        bandwidth_mhz: 2.5
+        power_dbm: -85
+        doppler: "low"
+        confidence: 0.78
+    - type: "local_ai_detection"
+      description: "Edge YOLO / classifier flagged possible small UAS silhouette at long range"
+      features:
+        class: "possible_uas"
+        range_m: 3200
+        confidence: 0.65
+
+output:
+  console: true
+  json_log: true
+  log_path: "/tmp/silent_sentinel_events.jsonl"

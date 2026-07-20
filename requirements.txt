@@ -1,0 +1,19 @@
+# Core
+numpy>=1.24
+pydantic>=2.0
+pyyaml>=6.0
+rich>=13.0          # nice console output on Jetson
+
+# Optional local LLM backends (install one)
+# ollama is recommended for simplicity on Orin Nano
+# requests is used by the Ollama client
+requests>=2.31
+
+# For future RF / signal work
+# scipy
+# scikit-learn
+
+# If using Hugging Face transformers instead of Ollama
+# torch  (use NVIDIA NGC container or Jetson wheels)
+# transformers
+# accelerate
