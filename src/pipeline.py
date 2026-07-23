@@ -17,6 +17,7 @@ from .levels import analyze_levels
 from .convergence import analyze_convergence
 from .human_aligned import check_alignment, AlignmentReport
 from .sensor_ingest import normalize_event
+from .bridge import post_to_worldmonitor
 
 logger = logging.getLogger(__name__)
 console = Console()
@@ -84,5 +85,11 @@ class SilentSentinelPipeline:
             log_path = Path(self.output_cfg.get("log_path", "/tmp/silent_sentinel_events.jsonl"))
             with open(log_path, "a") as f:
                 f.write(json.dumps(results, default=str) + "\n")
+
+        # 5. Edge ↔ Cloud bridge (World Monitor)
+        bridge_resp = post_to_worldmonitor(results, self.config)
+        if bridge_resp is not None:
+            results["bridge"] = bridge_resp
+            console.print("[green]✓ Posted to World Monitor bridge[/]")
 
         return results

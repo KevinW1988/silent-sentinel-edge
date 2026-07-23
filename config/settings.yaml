@@ -44,3 +44,12 @@ output:
   console: true
   json_log: true
   log_path: "/tmp/silent_sentinel_events.jsonl"
+
+# World Monitor edge ↔ cloud bridge
+# Point at a running World Monitor instance (npm run dev → localhost:3000)
+bridge:
+  enabled: true
+  url: "http://localhost:3000"
+  path: "/api/silent-sentinel/events"
+  key: ""                    # set to match SILENT_SENTINEL_INGEST_KEY if configured
+  timeout_seconds: 10
